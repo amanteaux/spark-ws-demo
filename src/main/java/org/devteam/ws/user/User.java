@@ -1,4 +1,4 @@
-package org.devteam.ws;
+package org.devteam.ws.user;
 
 /**
  * Created by amanteaux on 18/04/15.

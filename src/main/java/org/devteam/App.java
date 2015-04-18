@@ -2,7 +2,8 @@ package org.devteam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.devteam.ws.UserWs;
+import org.devteam.ws.Ws;
+import org.devteam.ws.DaggerWs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -19,9 +20,11 @@ public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     private final ObjectMapper mapper;
+    private final Ws ws;
 
     public App() {
         this.mapper = new ObjectMapper();
+        this.ws = DaggerWs.create();
     }
 
     public static void main( String[] args ) {
@@ -29,9 +32,7 @@ public class App {
     }
 
     private void router() {
-        UserWs userWs = new UserWs();
-
-        get("/hello/:name", json(authenticate(userWs::hello)));
+        get("/hello/:name", json(authenticate(ws.user()::hello)));
     }
 
     private <T> Route json(BiFunction<Request, Response, T> action) {
