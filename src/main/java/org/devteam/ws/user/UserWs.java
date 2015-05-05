@@ -1,10 +1,15 @@
 package org.devteam.ws.user;
 
-import spark.Request;
-import spark.Response;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.devteam.services.user.User;
+import org.devteam.services.user.UserService;
+
+import spark.Request;
+import spark.Response;
 
 /**
  * Created by amanteaux on 18/04/15.
@@ -12,12 +17,15 @@ import javax.inject.Singleton;
 @Singleton
 public class UserWs {
 
+	private final UserService userService;
+	
     @Inject
-    public UserWs() {
+    public UserWs(UserService userService) {
+    	this.userService = userService;
     }
 
-    public User hello(Request request, Response response) {
-        return new User(request.params(":name"), "Hello " + request.params(":name"));
+    public List<User> list(Request request, Response response) {
+        return userService.list();
     }
 
 }

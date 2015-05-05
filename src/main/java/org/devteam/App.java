@@ -32,9 +32,11 @@ public class App {
     }
 
     private void router() {
-        get("/hello/:name", json(authenticate(ws.user()::hello)));
+        get("/user/", json(authenticate(ws.user()::list)));
     }
 
+    // composition functions
+    
     private <T> Route json(BiFunction<Request, Response, T> action) {
         return ((request, response) -> {
             try {
