@@ -1,4 +1,4 @@
-package org.devteam.ws.user;
+package org.devteam.web.ws.user;
 
 import java.util.List;
 
