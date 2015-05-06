@@ -8,6 +8,6 @@ import dagger.Component;
 
 @Component(modules = ServicesModule.class)
 @Singleton
-public interface Web {
+public interface WebApp {
     Router router();
 }

@@ -1,11 +1,11 @@
 package org.devteam;
 
-import org.devteam.web.DaggerWeb;
+import org.devteam.web.DaggerWebApp;
 
 public class App {
 
     public static void main( String[] args ) {
-    	DaggerWeb
+    	DaggerWebApp
     		.create()
     		.router()
     		.configureRoutes();
