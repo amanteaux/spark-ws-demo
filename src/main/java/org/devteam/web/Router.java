@@ -27,10 +27,10 @@ public class Router {
 	}
 
 	public void configureRoutes() {
-		get("/user/", authenticatedWithJson(userWs::list));
+		get("/user/", authenticatedAndJsonResponse(userWs::list));
 	}
 
-	private Route authenticatedWithJson(Route route) {
+	private Route authenticatedAndJsonResponse(Route route) {
 		return jsonFilter.jsonResponse(authenticationFilter.authenticate(route));
 	}
 	
