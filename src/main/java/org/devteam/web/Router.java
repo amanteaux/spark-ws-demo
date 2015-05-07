@@ -11,6 +11,9 @@ import org.devteam.web.ws.user.UserWs;
 
 import spark.Route;
 
+/**
+ * Configure the web application routes
+ */
 @Singleton
 public class Router {
 	

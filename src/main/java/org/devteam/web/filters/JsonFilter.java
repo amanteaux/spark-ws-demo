@@ -25,6 +25,9 @@ public class JsonFilter {
 		this.mapper = new ObjectMapper();
 	}
 
+	/**
+	 * Convert the response to a JSON string and change the response content-type to application/json
+	 */
 	public Route jsonResponse(Route action) {
         return ((request, response) -> {
             try {

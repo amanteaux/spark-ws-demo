@@ -11,9 +11,6 @@ import org.devteam.services.user.UserService;
 import spark.Request;
 import spark.Response;
 
-/**
- * Created by amanteaux on 18/04/15.
- */
 @Singleton
 public class UserWs {
 
