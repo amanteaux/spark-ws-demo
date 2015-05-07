@@ -28,6 +28,7 @@ public class JsonFilter {
 	public Route jsonResponse(Route action) {
         return ((request, response) -> {
             try {
+            	// the result has to be evaluated before doing anything, this way, if an error occured, the response won't changed
             	Object result = action.handle(request, response);
                 response.type("application/json; charset=utf-8");
                 return mapper.writeValueAsString(result);
