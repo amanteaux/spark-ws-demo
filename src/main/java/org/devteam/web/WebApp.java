@@ -9,5 +9,5 @@ import dagger.Component;
 @Component(modules = ServicesModule.class)
 @Singleton
 public interface WebApp {
-    Router router();
+	Router router();
 }
