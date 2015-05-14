@@ -4,11 +4,11 @@ import org.devteam.web.DaggerWebApp;
 
 public class App {
 
-    public static void main(String[] args) {
-    	DaggerWebApp
-    		.create()
-    		.router()
-    		.configureRoutes();
-    }
+	public static void main(String[] args) {
+		DaggerWebApp
+				.create()
+				.router()
+				.install();
+	}
 
 }

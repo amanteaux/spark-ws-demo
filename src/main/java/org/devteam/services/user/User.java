@@ -2,20 +2,26 @@ package org.devteam.services.user;
 
 public class User {
 
-	private final String firstname;
-	private final String lastname;
+	private final String name;
+	private final String login;
+	private final String password;
 
-	public User(String firstname, String lastname) {
-		this.firstname = firstname;
-		this.lastname = lastname;
+	public User(String name, String login, String password) {
+		this.name = name;
+		this.login = login;
+		this.password = password;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getName() {
+		return name;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getLogin() {
+		return login;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 }
