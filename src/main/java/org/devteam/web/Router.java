@@ -1,18 +1,20 @@
 package org.devteam.web;
 
-import org.devteam.web.filters.AuthenticationFilter;
-import org.devteam.web.filters.JsonFilter;
-import org.devteam.web.ws.SupervisionWs;
-import org.devteam.web.ws.UserWs;
-import spark.Route;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
+import static spark.SparkBase.staticFileLocation;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
-import static spark.Spark.delete;
+import org.devteam.web.filters.AuthenticationFilter;
+import org.devteam.web.filters.JsonFilter;
+import org.devteam.web.ws.SupervisionWs;
+import org.devteam.web.ws.UserWs;
+
+import spark.Route;
 
 /**
  * Configure the web application routes
@@ -36,6 +38,9 @@ public class Router {
 	}
 
 	public void install() {
+		// angular app
+		staticFileLocation("/web");
+		
 		// authenticated
 		get("/user/", authenticatedAndJsonResponse(userWs::list));
 		get("/user/:login", authenticatedAndJsonResponse(userWs::get));
