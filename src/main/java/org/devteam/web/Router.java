@@ -42,14 +42,14 @@ public class Router {
 		staticFileLocation("/web");
 		
 		// authenticated
-		get("/user/", authenticatedAndJsonResponse(userWs::list));
+		get("/user", authenticatedAndJsonResponse(userWs::list));
 		get("/user/:login", authenticatedAndJsonResponse(userWs::get));
 		post("/user/", authenticatedAndJsonResponse(userWs::add));
 		put("/user/:login", authenticatedAndJsonResponse(userWs::update));
 		delete("user/:login", authenticationFilter.authenticate(userWs::delete));
 
 		// public
-		get("/status/", jsonFilter.jsonResponse(supervisionWs::serverStatus));
+		get("/status", jsonFilter.jsonResponse(supervisionWs::serverStatus));
 	}
 
 	private Route authenticatedAndJsonResponse(Route route) {
