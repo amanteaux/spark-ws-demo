@@ -11,7 +11,9 @@ public interface UserService {
 
 	Optional<User> fetch(String login);
 
-	User save(String name, String login, String password);
+	User create(String login, String name, String password);
+	
+	User update(String login, String name, String password);
 
 	void delete(String login);
 	

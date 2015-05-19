@@ -36,16 +36,25 @@ public class UserServiceInMemory implements UserService {
 	}
 
 	@Override
-	public User save(String name, String login, String password) {
-		User user = new User(name, login, password);
-		users.put(login, user);
+	public User create(String login, String name, String password) {
+		return save(login, name, password);
+	}
 
-		return user;
+	@Override
+	public User update(String login, String name, String password) {
+		return save(login, name, password);
 	}
 
 	@Override
 	public void delete(String login) {
 		users.remove(login);
+	}
+
+	private User save(String login, String name, String password) {
+		User user = new User(name, login, password);
+		users.put(login, user);
+
+		return user;
 	}
 
 }

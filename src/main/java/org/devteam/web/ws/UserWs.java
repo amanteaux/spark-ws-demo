@@ -42,9 +42,9 @@ public class UserWs {
 				halt(HttpServletResponse.SC_BAD_REQUEST, "A user already exists with this login")
 		);
 
-		return userService.save(
-				requiredParam(request, "name"),
+		return userService.create(
 				login,
+				requiredParam(request, "name"),
 				requiredParam(request, "password")
 		);
 	}
@@ -54,9 +54,9 @@ public class UserWs {
 
 		return userService
 				.fetch(request.params(":login"))
-				.map(userToUpdate -> userService.save(
-						requiredParam(request, "name"),
+				.map(userToUpdate -> userService.update(
 						userToUpdate.getLogin(),
+						requiredParam(request, "name"),
 						requiredParam(request, "password")
 				))
 				.orElseGet(this::userNotFound);
