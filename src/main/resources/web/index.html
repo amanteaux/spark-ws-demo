@@ -26,8 +26,13 @@
                             <p class="navbar-text">Server is <span class="label {{server.statusClass}}">{{server.statusLabel}}</span></p>
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="/#/">Disconnect</a></li>
+                            <ul class="nav navbar-nav navbar-right" ng-show="session">
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{session.name}} <span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="/#/">Logout</a></li>
+									</ul>
+								</li>
                             </ul>
                         </div>
                     </div>
@@ -47,7 +52,8 @@
         <script src="js/app.js"></script>
 
 		<script src="js/services/serverStatus.js"></script>
+		<script src="js/services/user.js"></script>
         
-        <script src="js/controllers/login.js"></script>
+        <script src="js/controllers/session.js"></script>
     </body>
 </html>
