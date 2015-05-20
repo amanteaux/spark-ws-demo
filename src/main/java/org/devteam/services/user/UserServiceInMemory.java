@@ -18,7 +18,7 @@ public class UserServiceInMemory implements UserService {
 	@Inject
 	public UserServiceInMemory() {
 		users = new ConcurrentHashMap<>();
-		save("Uta Willis", "uwillis", "secret");
+		save("uwillis", "Uta Willis", "secret");
 	}
 
 	@Override
