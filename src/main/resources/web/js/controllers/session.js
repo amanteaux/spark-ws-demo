@@ -1,14 +1,14 @@
 'use strict';
 
 app
-.controller('login', function ($scope, userService) {
-	$scope.login = function(logins) {
+.controller('login', function ($scope, $location, userService) {
+	$scope.login = function(user) {
 		userService
-		.user
-		.save(user)
+		.user(user.login, user.password)
+		.get({login: user.login})
 		.$promise
 		.then(function() {
-			// TODO redirect
+			$location.path('/user/');
 		}, function(reason) {
 			if(reason.data.errorCode) {
 				// TODO 401 => error

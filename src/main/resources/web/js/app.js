@@ -11,6 +11,10 @@ var app = angular
             controller: 'login',
             templateUrl: 'views/login.html'
         })
+        .when('/user/', {
+            controller: 'userTable',
+            templateUrl: 'views/users.html'
+        })
 })
 .run(function(serverStatus) {
 	serverStatus.watch();
