@@ -16,6 +16,13 @@ var app = angular
             templateUrl: 'views/users.html'
         })
 })
+.run(function($rootScope, $location, sessionService) {
+	$rootScope.$on("$routeChangeStart", function(event, next, current) {
+		if (!sessionService.isAuthenticated() && next.originalPath != "/") {
+			$location.path('/');
+		}         
+	});
+})
 .run(function(serverStatus) {
 	serverStatus.watch();
 })
