@@ -19,6 +19,8 @@ public class UserServiceInMemory implements UserService {
 	public UserServiceInMemory() {
 		users = new ConcurrentHashMap<>();
 		save("uwillis", "Uta Willis", "secret");
+		save("swaller", "Scarlett Waller", "abcd");
+		save("nklein", "Nissim Klein", "azerty");
 	}
 
 	@Override
