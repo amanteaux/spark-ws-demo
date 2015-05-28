@@ -1,7 +1,7 @@
 'use strict';
 
 app
-.controller('userTable', function ($scope, userService, sessionService, alertService) {
+.controller('users', function ($scope, userService, sessionService, alertService) {
 	var userWs = userService.user(sessionService.current()); 
 	
 	var updateUsers = function() {

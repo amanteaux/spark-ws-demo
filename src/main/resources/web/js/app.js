@@ -12,7 +12,7 @@ var app = angular
             templateUrl: 'views/login.html'
         })
         .when('/user/', {
-            controller: 'userTable',
+            controller: 'users',
             templateUrl: 'views/users.html'
         })
 })
