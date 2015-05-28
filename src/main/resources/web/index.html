@@ -39,6 +39,11 @@
                 </nav>
             </header>
 
+			<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-controller="alertController" ng-show="alert">
+			  <button type="button" class="close" aria-label="Close" ng-click="hide()"><span aria-hidden="true">&times;</span></button>
+			  {{alert.message}}
+			</div>
+
             <main ng-view></main>
         </div>
 
@@ -54,8 +59,10 @@
 		<script src="js/services/serverStatus.js"></script>
 		<script src="js/services/user.js"></script>
 		<script src="js/services/session.js"></script>
+		<script src="js/services/alert.js"></script>
         
         <script src="js/controllers/session.js"></script>
         <script src="js/controllers/users.js"></script>
+        <script src="js/controllers/alert.js"></script>
     </body>
 </html>

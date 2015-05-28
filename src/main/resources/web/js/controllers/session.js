@@ -8,20 +8,14 @@ app
 	
 	$scope.login = function(user) {
 		userService
-		.user(user.login, user.password)
+		.user(user)
 		.get({login: user.login})
 		.$promise
 		.then(function(userData) {
 			sessionService.login(userData);
 			
 			$location.path('/user/');
-		}, function(reason) {
-			if(reason.data.errorCode) {
-				// TODO 401 => error
-			} else {
-				// TODO generic error
-			}
-		});
+		}, userService.defaultErrorHandling);
 	};
 })
 .controller('logout', function ($scope, $location, sessionService) {

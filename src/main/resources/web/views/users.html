@@ -1,1 +1,19 @@
-Users list
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Login</th>
+			<th>Name</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="user in users">
+			<td>{{user.login}}</td>
+			<td>{{user.name}}</td>
+			<td>
+				<button class="btn btn-primary">Edit</button>
+				<button class="btn btn-danger" ng-click="remove(user)">Delete</button>
+			</td>
+		</tr>
+	</tbody>
+</table>

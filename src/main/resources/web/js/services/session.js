@@ -2,16 +2,23 @@
 
 app.service('sessionService', function($rootScope) {
 	
-	this.isAuthenticated = function() {
-		return $rootScope.session;
-	};
-	
-	this.logout = function() {
-		$rootScope.session = null;
-	};
-	
-	this.login = function(userData) {
-		$rootScope.session = userData;
+	return {
+		isAuthenticated: function() {
+			return $rootScope.session;
+		},
+		
+		logout: function() {
+			$rootScope.session = null;
+		},
+		
+		login: function(userData) {
+			$rootScope.session = userData;
+		},
+		
+		current: function() {
+			return $rootScope.session;
+		}
+		
 	};
 	
 });

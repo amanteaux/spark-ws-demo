@@ -1,6 +1,6 @@
 'use strict';
 
-app.service('userService', function ($resource) {
+app.service('userService', function ($resource, alertService) {
 	
 	var requestWithHeader = function(method, login, password) {
 		return {
@@ -12,17 +12,28 @@ app.service('userService', function ($resource) {
 		}
 	};
 	
-	this.user = function(login, password) {
-		return $resource(
-				'/user/:login',
-				{login:'@login'},
-				{
-					get: requestWithHeader('GET', login, password),
-					add: requestWithHeader('POST', login, password),
-					update: requestWithHeader('POST', login, password),
-					query: angular.extend({isArray: true}, requestWithHeader('GET', login, password))
-				}
-		);
+	return {
+		user: function(user) {
+			return $resource(
+					'/user/:login',
+					{login:'@login'},
+					{
+						get: requestWithHeader('GET', user.login, user.password),
+						add: requestWithHeader('POST', user.login, user.password),
+						update: requestWithHeader('PUT', user.login, user.password),
+						query: angular.extend({isArray: true}, requestWithHeader('GET', user.login, user.password)),
+						remove: requestWithHeader('DELETE', user.login, user.password)
+					}
+			);
+		},
+		
+		defaultErrorHandling: function(reason) {
+			if(reason.status == 401) {
+				alertService.append("danger", "Wrong credentials");
+			} else {
+				alertService.internalError();
+			}
+		}
 	};
 	
 });

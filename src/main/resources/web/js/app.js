@@ -16,14 +16,19 @@ var app = angular
             templateUrl: 'views/users.html'
         })
 })
-.run(function($rootScope, $location, sessionService) {
+.run(function($rootScope, $location, sessionService, alertService) {
 	$rootScope.$on("$routeChangeStart", function(event, next, current) {
 		if (!sessionService.isAuthenticated() && next.originalPath != "/") {
 			$location.path('/');
+		}
+		// if an error happened, it often should to be displayed on the login page
+		// in other cases, whenever the route changes, alerts should be dismissed
+		else {
+			alertService.remove();
 		}         
 	});
 })
-.run(function(serverStatus) {
-	serverStatus.watch();
+.run(function(serverStatusService) {
+	serverStatusService.watch();
 })
 ;
