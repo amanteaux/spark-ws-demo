@@ -15,6 +15,8 @@ app
 	
 	updateUsers();
 	
+	$scope.user = {edit: false};
+	
 	$scope.remove = function(user) {
 		userWs
 			.remove(user)
@@ -25,5 +27,15 @@ app
 				updateUsers();
 			}, userService.defaultErrorHandling);
 	};
+	
+	$scope.cancel = function() {
+		$scope.user.edit = false;
+	};
+	
+	$scope.edit = function(user) {
+		user.edit = true;
+		$scope.user = user;
+	};
+	
 })
 ;

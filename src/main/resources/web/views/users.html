@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table table-striped" ng-show="!user.edit">
 	<thead>
 		<tr>
 			<th>Login</th>
@@ -11,9 +11,26 @@
 			<td>{{user.login}}</td>
 			<td>{{user.name}}</td>
 			<td>
-				<button class="btn btn-primary">Edit</button>
+				<button class="btn btn-primary" ng-click="edit(user)">Edit</button>
 				<button class="btn btn-danger" ng-click="remove(user)">Delete</button>
 			</td>
 		</tr>
 	</tbody>
 </table>
+
+<form ng-show="user.edit" ng-submit="save(user)">
+	<div class="form-group">
+		<label for="loginInput">Login</label>
+		<input type="text" class="form-control" id="loginInput" placeholder="Login" required autofocus ng-model="user.login" />
+	</div>
+	<div class="form-group">
+		<label for="nameInput">Name</label>
+		<input type="text" class="form-control" id="nameInput" placeholder="Name" required ng-model="user.name" />
+	</div>
+	<div class="form-group">
+		<label for="passwordInput">Password</label>
+		<input type="password" class="form-control" id="passwordInput" placeholder="Name" required ng-model="user.password" />
+	</div>
+	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</form>
