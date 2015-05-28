@@ -11,7 +11,11 @@ app
 		.user(user.login, user.password)
 		.get({login: user.login})
 		.$promise
-		.then(sessionService.login, function(reason) {
+		.then(function(userData) {
+			sessionService.login(userData);
+			
+			$location.path('/user/');
+		}, function(reason) {
 			if(reason.data.errorCode) {
 				// TODO 401 => error
 			} else {
@@ -20,8 +24,10 @@ app
 		});
 	};
 })
-.controller('logout', function ($scope) {
-	
-	
+.controller('logout', function ($scope, $location, sessionService) {
+	$scope.logout = function() {
+		sessionService.logout();
+		$location.path('/');
+	}
 })
 ;

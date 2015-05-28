@@ -26,11 +26,11 @@
                             <p class="navbar-text">Server is <span class="label {{server.statusClass}}">{{server.statusLabel}}</span></p>
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav navbar-right" ng-show="session">
+                            <ul class="nav navbar-nav navbar-right" ng-show="session" ng-controller="logout">
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{session.name}} <span class="caret"></span></a>
 									<ul class="dropdown-menu" role="menu">
-										<li><a ng-click="session.logout()">Logout</a></li>
+										<li><a ng-click="logout()">Logout</a></li>
 									</ul>
 								</li>
                             </ul>
