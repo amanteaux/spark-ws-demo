@@ -34,6 +34,7 @@ app
 	
 	$scope.edit = function(user) {
 		user.edit = true;
+		user.password = null;
 		$scope.user = user;
 	};
 	
