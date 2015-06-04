@@ -19,10 +19,7 @@
 </table>
 
 <form ng-show="user.edit" ng-submit="save(user)">
-	<div class="form-group">
-		<label for="loginInput">Login</label>
-		<input type="text" class="form-control" id="loginInput" placeholder="Login" required autofocus ng-model="user.login" />
-	</div>
+	<input type="hidden" ng-model="user.login" />
 	<div class="form-group">
 		<label for="nameInput">Name</label>
 		<input type="text" class="form-control" id="nameInput" placeholder="Name" required ng-model="user.name" />
@@ -31,6 +28,6 @@
 		<label for="passwordInput">Password</label>
 		<input type="password" class="form-control" id="passwordInput" placeholder="Password" required ng-model="user.password" />
 	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary">Update</button>
 	<button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </form>

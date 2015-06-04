@@ -10,12 +10,13 @@ app
 		.$promise
 		.then(function(users) {
 			$scope.users = users;
+			$scope.user.edit = false;
 		}, userService.defaultErrorHandling);
 	};
 	
-	updateUsers();
-	
 	$scope.user = {edit: false};
+	
+	updateUsers();
 	
 	$scope.remove = function(user) {
 		userWs
@@ -35,6 +36,17 @@ app
 	$scope.edit = function(user) {
 		user.edit = true;
 		$scope.user = user;
+	};
+	
+	$scope.save = function(user) {
+		userWs
+			.update(user)
+			.$promise
+			.then(function() {
+				alertService.append("success", "User '" + user.login + "' has successfully been updated");
+				
+				updateUsers();
+			}, userService.defaultErrorHandling);
 	};
 	
 })
