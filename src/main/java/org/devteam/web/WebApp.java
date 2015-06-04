@@ -6,7 +6,7 @@ import org.devteam.services.ServicesModule;
 
 import dagger.Component;
 
-@Component(modules = ServicesModule.class)
+@Component(modules = { ServicesModule.class, WebModule.class })
 @Singleton
 public interface WebApp {
 	Router router();

@@ -22,8 +22,8 @@ public class JsonFilter {
 	private final ObjectMapper mapper;
 
 	@Inject
-	public JsonFilter() {
-		this.mapper = new ObjectMapper();
+	public JsonFilter(ObjectMapper mapper) {
+		this.mapper = mapper;
 	}
 
 	/**

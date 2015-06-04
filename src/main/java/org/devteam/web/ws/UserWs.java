@@ -1,27 +1,34 @@
 package org.devteam.web.ws;
 
-import com.google.common.base.Strings;
-import org.devteam.services.user.User;
-import org.devteam.services.user.UserService;
-import spark.Request;
-import spark.Response;
+import static spark.Spark.halt;
+
+import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Optional;
 
-import static spark.Spark.halt;
+import org.devteam.services.user.User;
+import org.devteam.services.user.UserService;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
+
+import spark.Request;
+import spark.Response;
 
 @Singleton
 public class UserWs {
 
 	private final UserService userService;
+	private final ObjectMapper jsonMapper;
 
 	@Inject
-	public UserWs(UserService userService) {
+	public UserWs(UserService userService, ObjectMapper jsonMapper) {
 		this.userService = userService;
+		this.jsonMapper = jsonMapper;
 	}
 
 	public List<User> list(Request request, Response response) {
@@ -35,30 +42,31 @@ public class UserWs {
 	}
 
 	public User add(Request request, Response response) {
-		checkContentTypeFormUrlEncoded(request);
-
-		String login = requiredParam(request, "login");
+		String login = request.queryParams("login");
+		checkRequiredParam(login, "login");
 		userService.fetch(login).ifPresent(user ->
 				halt(HttpServletResponse.SC_BAD_REQUEST, "A user already exists with this login")
 		);
 
+		UserData userData = parseUser(request);
 		return userService.create(
 				login,
-				requiredParam(request, "name"),
-				requiredParam(request, "password")
+				userData.name,
+				userData.password
 		);
 	}
 
 	public User update(Request request, Response response) {
-		checkContentTypeFormUrlEncoded(request);
-
 		return userService
 				.fetch(request.params(":login"))
-				.map(userToUpdate -> userService.update(
+				.map(userToUpdate -> {
+					UserData userData = parseUser(request);
+					return userService.update(
 						userToUpdate.getLogin(),
-						requiredParam(request, "name"),
-						requiredParam(request, "password")
-				))
+						userData.name,
+						userData.password
+					);
+				})
 				.orElseGet(this::userNotFound);
 	}
 
@@ -80,20 +88,35 @@ public class UserWs {
 		return null;
 	}
 
-	private String requiredParam(Request request, String name) {
-		return Optional
-				.ofNullable(request.queryParams(name))
-				.orElseGet(() -> {
-					// TODO refactor when https://github.com/perwendel/spark/pull/270 is accepted
-					halt(HttpServletResponse.SC_BAD_REQUEST, "'"+name+"' is required");
-					return null;
-				});
+	private UserData parseUser(Request request) {
+		try {
+			UserData userData = jsonMapper.readValue(request.body(), UserData.class);
+			
+			checkRequiredParam(userData.name, "name");
+			checkRequiredParam(userData.password, "password");
+			
+			return userData;
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
 	}
-
-	private void checkContentTypeFormUrlEncoded(Request request) {
-		String contentType = request.contentType();
-		if(Strings.isNullOrEmpty(contentType) || !contentType.contains("application/x-www-form-urlencoded")) {
-			halt(HttpServletResponse.SC_BAD_REQUEST, "Content-Type header must be 'application/x-www-form-urlencoded'");
+	
+	private void checkRequiredParam(String value, String name) {
+		if(Strings.isNullOrEmpty(value)) {
+			// TODO refactor when https://github.com/perwendel/spark/pull/270 is accepted
+			halt(HttpServletResponse.SC_BAD_REQUEST, "'"+name+"' is required");
+		}
+	}
+	
+	@SuppressWarnings("unused") // Jackson needs unused setter
+	private static class UserData {
+		private String name;
+		private String password;
+		public void setName(String name) {
+			this.name = name;
+		}
+		public void setPassword(String password) {
+			this.password = password;
 		}
 	}
 
