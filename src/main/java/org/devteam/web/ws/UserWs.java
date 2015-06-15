@@ -34,35 +34,32 @@ public class UserWs {
 	public List<User> list(Request request, Response response) {
 		return userService.list();
 	}
-
-	public User get(Request request, Response response) {
-		return userService
-				.fetch(request.params(":login"))
-				.orElseGet(this::userNotFound);
-	}
-
+	
 	public User add(Request request, Response response) {
-		String login = request.queryParams("login");
-		checkRequiredParam(login, "login");
-		userService.fetch(login).ifPresent(user ->
+		UserData userData = parseUser(request);
+
+		userService.fetch(userData.login).ifPresent(user ->
 				halt(HttpServletResponse.SC_BAD_REQUEST, "A user already exists with this login")
 		);
 
-		UserData userData = parseUser(request);
 		return userService.create(
-				login,
+				userData.login,
 				userData.name,
 				userData.password
 		);
 	}
 
+	public User get(Request request, Response response) {
+		return userFromPathLogin(request)
+				.orElseGet(this::userNotFound);
+	}
+
 	public User update(Request request, Response response) {
-		return userService
-				.fetch(request.params(":login"))
+		return userFromPathLogin(request)
 				.map(userToUpdate -> {
 					UserData userData = parseUser(request);
 					return userService.update(
-						userToUpdate.getLogin(),
+						userData.login,
 						userData.name,
 						userData.password
 					);
@@ -71,7 +68,7 @@ public class UserWs {
 	}
 
 	public String delete(Request request, Response response) {
-		Optional<User> userToDelete = userService.fetch(request.params(":login"));
+		Optional<User> userToDelete = userFromPathLogin(request);
 		if(userToDelete.isPresent()) {
 			userService.delete(userToDelete.get().getLogin());
 			return "User deleted";
@@ -81,6 +78,10 @@ public class UserWs {
 	}
 
 	// internal
+	
+	private Optional<User> userFromPathLogin(Request request) {
+		return userService.fetch(request.params(":login"));
+	}
 
 	private User userNotFound() {
 		// TODO refactor when https://github.com/perwendel/spark/pull/270 is accepted
@@ -92,6 +93,7 @@ public class UserWs {
 		try {
 			UserData userData = jsonMapper.readValue(request.body(), UserData.class);
 			
+			checkRequiredParam(userData.login, "login");
 			checkRequiredParam(userData.name, "name");
 			checkRequiredParam(userData.password, "password");
 			
@@ -110,8 +112,13 @@ public class UserWs {
 	
 	@SuppressWarnings("unused") // Jackson needs unused setter
 	private static class UserData {
+		private String login;
 		private String name;
 		private String password;
+		
+		public void setLogin(String login) {
+			this.login = login;
+		}
 		public void setName(String name) {
 			this.name = name;
 		}
