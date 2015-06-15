@@ -19,7 +19,11 @@
 </table>
 
 <form ng-show="user.edit" ng-submit="save(user)">
-	<input type="hidden" ng-model="user.login" />
+	<input type="hidden" ng-model="user.originalLogin" />
+	<div class="form-group">
+		<label for="loginInput">Login</label>
+		<input type="text" class="form-control" id="loginInput" placeholder="Login" required ng-model="user.login" />
+	</div>
 	<div class="form-group">
 		<label for="nameInput">Name</label>
 		<input type="text" class="form-control" id="nameInput" placeholder="Name" required ng-model="user.name" />

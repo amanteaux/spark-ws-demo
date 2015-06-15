@@ -35,12 +35,13 @@ app
 	
 	$scope.edit = function(user) {
 		user.edit = true;
+		user.originalLogin = user.login;
 		$scope.user = user;
 	};
 	
 	$scope.save = function(user) {
 		userWs
-			.update(user)
+			.update({'login': user.originalLogin}, user)
 			.$promise
 			.then(function() {
 				alertService.append("success", "User '" + user.login + "' has successfully been updated");

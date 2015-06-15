@@ -18,9 +18,9 @@ public class UserServiceInMemory implements UserService {
 	@Inject
 	public UserServiceInMemory() {
 		users = new ConcurrentHashMap<>();
-		save("uwillis", "Uta Willis", "secret");
-		save("swaller", "Scarlett Waller", "abcd");
-		save("nklein", "Nissim Klein", "azerty");
+		create("uwillis", "Uta Willis", "secret");
+		create("swaller", "Scarlett Waller", "abcd");
+		create("nklein", "Nissim Klein", "azerty");
 	}
 
 	@Override
@@ -28,6 +28,7 @@ public class UserServiceInMemory implements UserService {
 		return fetch(login).filter(user -> user.getPassword().equals(password));
 	}
 
+	@Override
 	public List<User> list() {
 		return ImmutableList.copyOf(users.values());
 	}
@@ -43,7 +44,8 @@ public class UserServiceInMemory implements UserService {
 	}
 
 	@Override
-	public User update(String login, String name, String password) {
+	public User update(String originalLogin, String login, String name, String password) {
+		users.remove(originalLogin);
 		return save(login, name, password);
 	}
 

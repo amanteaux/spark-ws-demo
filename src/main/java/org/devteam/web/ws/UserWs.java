@@ -59,6 +59,7 @@ public class UserWs {
 				.map(userToUpdate -> {
 					UserData userData = parseUser(request);
 					return userService.update(
+						userToUpdate.getLogin(),
 						userData.login,
 						userData.name,
 						userData.password
