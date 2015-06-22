@@ -1,25 +1,27 @@
-<table class="table table-striped" ng-show="!user.edit">
-	<thead>
-		<tr>
-			<th>Login</th>
-			<th>Name</th>
-			<th>Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr ng-repeat="user in users">
-			<td>{{user.login}}</td>
-			<td>{{user.name}}</td>
-			<td>
-				<button class="btn btn-primary" ng-click="edit(user)">Edit</button>
-				<button class="btn btn-danger" ng-click="remove(user)">Delete</button>
-			</td>
-		</tr>
-	</tbody>
-</table>
+<div ng-show="!user.edit">
+	<button type="button" class="btn btn-default" ng-click="add()">Add user</button>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Login</th>
+				<th>Name</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="user in users">
+				<td>{{user.login}}</td>
+				<td>{{user.name}}</td>
+				<td>
+					<button class="btn btn-primary" ng-click="edit(user)">Edit</button>
+					<button class="btn btn-danger" ng-click="remove(user)">Delete</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 <form ng-show="user.edit" ng-submit="save(user)">
-	<input type="hidden" ng-model="user.originalLogin" />
 	<div class="form-group">
 		<label for="loginInput">Login</label>
 		<input type="text" class="form-control" id="loginInput" placeholder="Login" required ng-model="user.login" />
@@ -32,6 +34,6 @@
 		<label for="passwordInput">Password</label>
 		<input type="password" class="form-control" id="passwordInput" placeholder="Password" required ng-model="user.password" />
 	</div>
-	<button type="submit" class="btn btn-primary">Update</button>
+	<button type="submit" class="btn btn-primary">{{submitLabel}}</button>
 	<button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </form>
