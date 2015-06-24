@@ -1,6 +1,6 @@
 'use strict';
 
-app.service('userService', function ($resource, alertService) {
+app.service('userService', function ($rootScope, $resource, alertService) {
 	
 	var requestWithHeader = function(method, login, password) {
 		return {
@@ -30,6 +30,7 @@ app.service('userService', function ($resource, alertService) {
 		defaultErrorHandling: function(reason) {
 			if(reason.status == 401) {
 				alertService.append("danger", "Wrong credentials");
+				$rootScope.$broadcast('UNAUTHORIZED');
 			} else {
 				alertService.internalError();
 			}

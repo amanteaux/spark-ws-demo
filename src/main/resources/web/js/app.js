@@ -15,17 +15,26 @@ var app = angular
             controller: 'users',
             templateUrl: 'views/users.html'
         })
+        .otherwise({
+            redirectTo: '/'
+        });
 })
 .run(function($rootScope, $location, sessionService, alertService) {
 	$rootScope.$on("$routeChangeStart", function(event, next, current) {
-		if (!sessionService.isAuthenticated() && next.originalPath != "/") {
-			$location.path('/');
+		if (!sessionService.isAuthenticated()) {
+			if(next.originalPath != "/") {
+				$location.path('/');
+			}
 		}
-		// if an error happened, it often should to be displayed on the login page
-		// in other cases, whenever the route changes, alerts should be dismissed
+		// whenever the route changes, alerts should be dismissed (except on the login page when the user is disconnected)
 		else {
 			alertService.remove();
 		}         
+	});
+	
+	$rootScope.$on("UNAUTHORIZED", function() {
+		sessionService.logout();
+		$location.path('/');
 	});
 })
 .run(function(serverStatusService) {
