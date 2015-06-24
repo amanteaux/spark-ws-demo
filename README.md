@@ -17,6 +17,7 @@ If it is not already the case, you will also have to configure the annotation pr
 
 ## Action composition
 The big win with Spark and Java 8 is the ability the compose actions very easily:
+
 1. Let's consider ```get("/user", userWs::list)``` : the action ```userWs::list``` which list all the users is mapped to the path "/user"
 2. Want to produce JSON ? No problem: ```get("/user", jsonFilter.jsonResponse(userWs::list))```: ```jsonFilter.jsonResponse``` is a simple function that takes a Route as parameter and returns a Route ; the returned Route just serializes the result of the Route taken as parameter in JSON
 3. Want to restrict access ? ```get("/user", jsonFilter.jsonResponse(authenticationFilter.authenticate(userWs::list)))``` : the authenticationFilter works the same as the jsonFilter !
