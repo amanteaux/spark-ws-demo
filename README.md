@@ -33,6 +33,7 @@ The big win with Spark and Java 8 is the ability the compose actions very easily
 - Swagger cannot be easily integrated, see [issue #258](https://github.com/perwendel/spark/issues/258)
 - The current HTTP API is blocking: if you want to implement long polling or WebSocket, you will have a hard time
 - There is no instance API to configure Spark server, only the static API is available :(, see [pull request #167](https://github.com/perwendel/spark/pull/167)
+- There is only one maintainer, 
 
 ### Typical use cases
 - Microservices architecture
@@ -53,4 +54,14 @@ That makes Play a very serious competitor to Spark since its API is non-blocking
 I plan to port this demo application to Play Framework to see how it compares to Spark :)
 
 ## Going further
-If you want to provide a configuration functionality to a Spark application, a good choice would be the [config library](https://github.com/typesafehub/config).
+A real application will likely need other functionalities.
+
+### Configuration
+to provide a configuration functionality to a Spark application, a good choice would be the [config library](https://github.com/typesafehub/config).
+
+### Web-service client
+[OkHttp](http://square.github.io/okhttp/) and [Retrofit](http://square.github.io/retrofit/) target especially Android, however they also work great in any Java application.
+
+### Database querying
+A good alternative to JPA is [jOOQ](https://github.com/jOOQ/jOOQ) which enables to build type safe SQL queries.
+As a connection pool, [HikariCP](https://github.com/brettwooldridge/HikariCP) seems to be the better at the moment.
