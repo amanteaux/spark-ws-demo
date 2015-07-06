@@ -1,13 +1,15 @@
 # A demo application of Spark with Dagger and AngularJS
 The goal of this application is to show how common use-cases can be implemented with Spark:
+
 - public web-service,
 - web-services with restricted access (authentication required),
 - CRUD.
 
-This application use-case implementations are really simple ; be aware that in order to remain simple, some security issues were not addressed (encryption...)
+This application use-case implementations are really simple ; be aware that in order to remain simple, some security issues were not addressed (encryption...).
 
 ## I want to see it running
 Just launch the ```org.devteam.App``` class and open http://localhost:4567/ in your browser.
+
 If it is not already the case, you will also have to configure the annotation processor in your IDE : https://immutables.github.io/apt.html
 
 ## How does this works ?
@@ -16,12 +18,14 @@ If it is not already the case, you will also have to configure the annotation pr
 3. The server is up and running on port 4567
 
 ## Action composition
-The big win with Spark and Java 8 is the ability the compose actions very easily:
+The great thing with Spark and Java 8 is the ability the compose actions very easily:
 
 1. Let's consider ```get("/user", userWs::list)``` : the action ```userWs::list``` which list all the users is mapped to the path "/user"
 2. Want to produce JSON ? No problem: ```get("/user", jsonFilter.jsonResponse(userWs::list))```: ```jsonFilter.jsonResponse``` is a simple function that takes a Route as parameter and returns a Route ; the returned Route just serializes the result of the Route taken as parameter in JSON
-3. Want to restrict access ? ```get("/user", jsonFilter.jsonResponse(authenticationFilter.authenticate(userWs::list)))``` : the authenticationFilter works the same as the jsonFilter !
+3. Want to restrict access to the web-service ? ```get("/user", jsonFilter.jsonResponse(authenticationFilter.authenticate(userWs::list)))``` : the authenticationFilter works the same as the jsonFilter !
 4. Almost all your actions are using JSON and authentication ? Factorize it all: ```Route authenticatedAndJsonResponse(Route route) { return authenticationFilter.authenticate(jsonFilter.jsonResponse(route)); }```
+
+Even tough before and after filters are proposed by the framework, action composition enables the application to have a lot more flexibility: you can apply a filter to only certain actions. Moreover, it is easier to debug actions composition since you know exactly what you are doing.
 
 ## Spark review
 ### Strengths
@@ -33,11 +37,10 @@ The big win with Spark and Java 8 is the ability the compose actions very easily
 - Swagger cannot be easily integrated, see [issue #258](https://github.com/perwendel/spark/issues/258)
 - The current HTTP API is blocking: if you want to implement long polling or WebSocket, you will have a hard time
 - There is no instance API to configure Spark server, only the static API is available :(, see [pull request #167](https://github.com/perwendel/spark/pull/167)
-- There is only one maintainer, 
 
 ### Typical use cases
 - Microservices architecture
-- Small web-application
+- Small web-application (small but fast!)
 
 ### Alternative
 Since the version 2.4, Play Framework provides a way to [embed the server in a simple Java application](https://www.playframework.com/documentation/2.4.x/JavaEmbeddingPlay):
@@ -64,4 +67,4 @@ to provide a configuration functionality to a Spark application, a good choice w
 
 ### Database querying
 A good alternative to JPA is [jOOQ](https://github.com/jOOQ/jOOQ) which enables to build type safe SQL queries.
-As a connection pool, [HikariCP](https://github.com/brettwooldridge/HikariCP) seems to be the better at the moment.
+As a connection pool [HikariCP](https://github.com/brettwooldridge/HikariCP) seems to be the better at the moment.
