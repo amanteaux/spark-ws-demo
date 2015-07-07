@@ -37,7 +37,7 @@ public class Router {
 		this.authenticationFilter = authenticationFilter;
 	}
 
-	public void install() {
+	public void start() {
 		// angular app
 		staticFileLocation("/web");
 		
