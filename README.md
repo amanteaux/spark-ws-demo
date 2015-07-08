@@ -1,5 +1,5 @@
 # A demo application of Spark with Dagger and AngularJS
-The goal of this application is to show how common use-cases can be implemented with Spark:
+The goal of this application is to show how common use-cases can be implemented with [Spark](http://sparkjava.com/):
 - public web-service,
 - web-services with restricted access (authentication required),
 - CRUD.
