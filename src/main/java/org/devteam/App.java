@@ -8,7 +8,7 @@ public class App {
 		DaggerWebApp
 				.create()
 				.router()
-				.install();
+				.start();
 	}
 
 }
