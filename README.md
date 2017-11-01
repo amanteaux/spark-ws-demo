@@ -29,14 +29,16 @@ Even tough before and after filters are proposed by the framework, action compos
 
 ## Spark review
 ### Strengths
-- Spark launch fast ~ about 50ms
+- Spark launches fast ~ about 50ms
 - Spark *is* fast : the overhead on top of Jetty is very small, Spark action execution is almost as fast as raw servlet
 - Spark is simple : no reflection, no annotation, small library ; you will not encounter a lot of bad surprises using Spark
+- Spark supports webSockets
+- Spark supports an instance API: `Service.ignite().get("/api/hello", (request, response) -> "hello")`
 
 ### Weaknesses
 - Swagger cannot be easily integrated, see [issue #258](https://github.com/perwendel/spark/issues/258)
-- The current HTTP API is blocking: if you want to implement long polling or WebSocket, you will have a hard time
-- There is no instance API to configure Spark server, only the static API is available :(, see [pull request #167](https://github.com/perwendel/spark/pull/167)
+- The current HTTP API is blocking: if you want to implement an asynchronous web-service, you will have a hard time
+- The instance API is not yet fluent
 
 ### Typical use cases
 - Microservices architecture
@@ -68,3 +70,13 @@ to provide a configuration functionality to a Spark application, a good choice w
 ### Database querying
 A good alternative to JPA is [jOOQ](https://github.com/jOOQ/jOOQ) which enables to build type safe SQL queries.
 As a connection pool [HikariCP](https://github.com/brettwooldridge/HikariCP) seems to be the better at the moment.
+
+### Plume Framework
+Alternatively [Plume Framework](https://github.com/Coreoz/Plume) can be easily integrated to Spark
+(instead of Jersey which is provided by default).
+With Plume Framework these components will be optionally available:
+- configuration,
+- database querying,
+- mail sending,
+- scheduled tasks.
+

@@ -6,9 +6,9 @@ public class App {
 
 	public static void main(String[] args) {
 		DaggerWebApp
-				.create()
-				.router()
-				.start();
+			.create()
+			.router()
+			.start();
 	}
 
 }

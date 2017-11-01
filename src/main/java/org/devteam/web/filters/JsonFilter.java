@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import spark.Route;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import spark.Route;
 
 @Singleton
 public class JsonFilter {
@@ -38,9 +38,7 @@ public class JsonFilter {
 				return mapper.writeValueAsString(result);
 			} catch (JsonProcessingException e) {
 				logger.error("", e);
-				// TODO refactor when https://github.com/perwendel/spark/pull/270 is accepted
-				halt(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Shit happened :/");
-				return null;
+				return halt(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Shit happened :/");
 			}
 		});
 	}

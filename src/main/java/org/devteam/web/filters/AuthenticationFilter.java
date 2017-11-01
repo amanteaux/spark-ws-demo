@@ -1,15 +1,17 @@
 package org.devteam.web.filters;
 
-import org.devteam.services.user.UserService;
-import spark.Request;
-import spark.Route;
+import static spark.Spark.halt;
+
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
-import static spark.Spark.halt;
+import org.devteam.services.user.UserService;
+
+import spark.Request;
+import spark.Route;
 
 @Singleton
 public class AuthenticationFilter {
@@ -26,9 +28,7 @@ public class AuthenticationFilter {
 			if(isAuthenticated(request)) {
 				return action.handle(request, response);
 			} else {
-				// TODO refactor when https://github.com/perwendel/spark/pull/270 is accepted
-				halt(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-				return null;
+				return halt(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
 			}
 		});
 	}

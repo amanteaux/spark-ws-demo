@@ -1,11 +1,5 @@
 package org.devteam.web;
 
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
-import static spark.SparkBase.staticFileLocation;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -15,6 +9,7 @@ import org.devteam.web.ws.SupervisionWs;
 import org.devteam.web.ws.UserWs;
 
 import spark.Route;
+import spark.Service;
 
 /**
  * Configure the web application routes
@@ -38,18 +33,21 @@ public class Router {
 	}
 
 	public void start() {
+		Service sparkServer = Service.ignite();
+
 		// angular app
-		staticFileLocation("/web");
-		
+		sparkServer.staticFileLocation("/web");
+
+		// TODO the routes declaration should be fluent
 		// authenticated
-		get("/user", authenticatedAndJsonResponse(userWs::list));
-		get("/user/:login", authenticatedAndJsonResponse(userWs::get));
-		post("/user", authenticatedAndJsonResponse(userWs::add));
-		put("/user/:login", authenticatedAndJsonResponse(userWs::update));
-		delete("user/:login", authenticationFilter.authenticate(userWs::delete));
+		sparkServer.get("/user", authenticatedAndJsonResponse(userWs::list));
+		sparkServer.get("/user/:login", authenticatedAndJsonResponse(userWs::get));
+		sparkServer.post("/user", authenticatedAndJsonResponse(userWs::add));
+		sparkServer.put("/user/:login", authenticatedAndJsonResponse(userWs::update));
+		sparkServer.delete("user/:login", authenticationFilter.authenticate(userWs::delete));
 
 		// public
-		get("/status", jsonFilter.jsonResponse(supervisionWs::serverStatus));
+		sparkServer.get("/status", jsonFilter.jsonResponse(supervisionWs::serverStatus));
 	}
 
 	private Route authenticatedAndJsonResponse(Route route) {

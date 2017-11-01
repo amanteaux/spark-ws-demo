@@ -2,6 +2,7 @@ package org.devteam.web.ws;
 
 import static spark.Spark.halt;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,6 @@ import org.devteam.services.user.UserService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
 
 import spark.Request;
 import spark.Response;
@@ -34,7 +34,7 @@ public class UserWs {
 	public List<User> list(Request request, Response response) {
 		return userService.list();
 	}
-	
+
 	public User add(Request request, Response response) {
 		UserData userData = parseUser(request);
 
@@ -79,13 +79,12 @@ public class UserWs {
 	}
 
 	// internal
-	
+
 	private Optional<User> userFromPathLogin(Request request) {
 		return userService.fetch(request.params(":login"));
 	}
 
 	private User userNotFound() {
-		// TODO refactor when https://github.com/perwendel/spark/pull/270 is accepted
 		halt(HttpServletResponse.SC_NOT_FOUND, "User not found");
 		return null;
 	}
@@ -93,30 +92,29 @@ public class UserWs {
 	private UserData parseUser(Request request) {
 		try {
 			UserData userData = jsonMapper.readValue(request.body(), UserData.class);
-			
+
 			checkRequiredParam(userData.login, "login");
 			checkRequiredParam(userData.name, "name");
 			checkRequiredParam(userData.password, "password");
-			
+
 			return userData;
-		} catch (Exception e) {
-			throw Throwables.propagate(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private void checkRequiredParam(String value, String name) {
 		if(Strings.isNullOrEmpty(value)) {
-			// TODO refactor when https://github.com/perwendel/spark/pull/270 is accepted
 			halt(HttpServletResponse.SC_BAD_REQUEST, "'"+name+"' is required");
 		}
 	}
-	
+
 	@SuppressWarnings("unused") // Jackson needs unused setter
 	private static class UserData {
 		private String login;
 		private String name;
 		private String password;
-		
+
 		public void setLogin(String login) {
 			this.login = login;
 		}

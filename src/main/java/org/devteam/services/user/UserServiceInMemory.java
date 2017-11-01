@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableList;
 public class UserServiceInMemory implements UserService {
 
 	private final Map<String, User> users;
-	
+
 	@Inject
 	public UserServiceInMemory() {
 		users = new ConcurrentHashMap<>();

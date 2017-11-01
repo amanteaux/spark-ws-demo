@@ -12,5 +12,5 @@ public class WebModule {
 	@Provides ObjectMapper provideObjectMapper() {
 		return new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
-	
+
 }
